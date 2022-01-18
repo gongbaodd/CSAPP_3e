@@ -16,10 +16,14 @@ float_bits float_twice(float_bits f)
 
     if (exp == 0xFF - 1)
     {
+        // overflow
         frac = 0;
     }
     else if (exp == 0)
     {
+        // i.e. the number is 0b0.1;
+        // V_old = 2^{1-bias}*0b0.1 = 2^{-bias}
+        // V_new = 2^{1-bias}*0b1.0 = 2^{1-bias} = 2*V_old
         frac <<= 1;
     }
     else
@@ -32,4 +36,5 @@ float_bits float_twice(float_bits f)
 
 void main()
 {
+    assert(float_twice(0x3dcccccd) == 0x3e4ccccd);
 }
