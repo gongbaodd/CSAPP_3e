@@ -3,13 +3,14 @@
 
 typedef unsigned float_bits;
 
-float_bits float_twice(float_bits f)
+float_bits float_half(float_bits f)
 {
     unsigned sign = f >> 31;
     unsigned exp = f >> 23 & 0xFF;
     unsigned frac = f & 0x7FFFFF;
     unsigned rest = f & 0x7FFFFFFF;
 
+    // 0b111/2 = 0b100(0b011+1) i.e.
     int addition = (frac & 0x3) == 0x3; // round to even
 
     int is_NaN_oo = (exp == 0xFF);
@@ -38,4 +39,5 @@ float_bits float_twice(float_bits f)
 
 void main()
 {
+    assert(float_half(0x3e4ccccd) == 0x3dcccccd);
 }
