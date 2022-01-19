@@ -7,17 +7,23 @@ typedef unsigned float_bits;
 int bits_length(int i)
 {
     // Return 32 when i<0
-    if (i & INT_MIN != 0)
+    if ((i & INT_MIN) != 0)
+    {
+        return 32;
+    }
+
+    if (i == INT_MIN)
     {
         return 32;
     }
 
     int length = 0;
     unsigned u = (unsigned)i;
-    while (u >= (1 << length))
+    while (u >= ((unsigned)1 << length))
     {
         length++;
     }
+
     return length;
 }
 
@@ -94,20 +100,20 @@ float_bits float_i2f(int i)
 void main()
 {
     /* Test bits_length */
-    // assert(bits_length(-1) == 32);
-    // assert(bits_length(INT_MIN) == 32);
-    // assert(bits_length(0) == 0);
-    // assert(bits_length(3) == 2);
-    // assert(bits_length(23) == 5);
+    assert(bits_length(-1) == 32);
+    assert(bits_length(INT_MIN) == 32);
+    assert(bits_length(0) == 0);
+    assert(bits_length(3) == 2);
+    assert(bits_length(23) == 5);
 
     /* Test generate_mask */
-    // assert(generate_mask(3) == 0x7);
-    // assert(generate_mask(9) == 0x1FF);
-    // assert(generate_mask(31) == 0x7FFFFFFF);
+    assert(generate_mask(3) == 0x7);
+    assert(generate_mask(9) == 0x1FF);
+    assert(generate_mask(31) == 0x7FFFFFFF);
 
-    // /* Test float_i2f */
-    // assert(float_i2f(0) == 0x0);
-    // assert(float_i2f(INT_MIN) == 0xCF000000);
-    // assert(float_i2f(0x00359141) == 0x4A564504);
-    // assert(float_i2f(-98765) == 0xC7C0E680);
+    /* Test float_i2f */
+    assert(float_i2f(0) == 0x0);
+    assert(float_i2f(INT_MIN) == 0xCF000000);
+    assert(float_i2f(0x00359141) == 0x4A564504);
+    assert(float_i2f(-98765) == 0xC7C0E680);
 }
